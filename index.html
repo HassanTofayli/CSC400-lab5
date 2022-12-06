@@ -104,7 +104,7 @@
                     <div class="finish-btns pt-3">
                         <button value="Rest" type="reset"
                             class="finish-btn btn d-inline text-bg-light text-white w-auto">Rest</button>
-                        <button value="Submit" type="submit"
+                        <button onclick="validationToContinue()" value="Submit" type="submit"
                             class="finish-btn btn d-inline text-bg-light text-white w-auto">Continue</button>
                     </div>
                 </div>
@@ -175,6 +175,10 @@
         function calcTotal() {
             totalCost = parseFloat(costPerDay) * parseFloat(numberOfDays);
             document.getElementById("total-cost").innerHTML = totalCost;
+        }
+
+        function validationToContinue() {
+            
         }
     </script>
 </body>
