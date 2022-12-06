@@ -26,62 +26,157 @@
                 font-size: 0.8rem;
             }
         }
+
+        .finish-btn:hover {
+            background-color: rgba(255, 255, 255, 0.4) !important;
+        }
     </style>
 </head>
 
 <body>
     <div class="overflow-auto w-75 text-light position-absolute top-50 start-50 translate-middle">
-        <div class="p-3 p-lg-5 p-md-4 p-sm-3 container bg-light bg-opacity-25 rounded-4">
-            <div class="row">
-                <div class="col-8">
-                    <form class="form" action="">
+        <form class="form" action="">
+            <div class="p-1 p-lg-5 p-md-4 p-sm-3 container bg-light bg-opacity-25 rounded-4">
+                <div class="row">
+                    <div class="col-8">
                         <lable for="select" class=" p-1 form-lable">Models:</lable>
-                        <select class=" text-light mb-3 bg-transparent form-select" id="select">
-                            <option>SUV: Honda CR-V</option>
-                            <option>Minivan: Chrysler Pacifica</option>
-                            <option>Compact car: Ford Escape</option>
-                            <option>Some other car types1</option>
-                            <option>Some other car types2</option>
-                            <option>Some other car types3</option>
+                        <select onchange="rateChanger()" class=" text-light mb-3 bg-transparent form-select"
+                            id="selectCar">
+                            <option name="myModel" value="50">SUV: Honda CR-V</option>
+                            <option name="myModel" value="60">Minivan: Chrysler Pacifica</option>
+                            <option name="myModel" value="25">Compact car: Ford Escape</option>
+                            <option name="myModel" value="35">Full-size car: Chevy Impala</option>
+                            <option name="myModel" value="60">Luxury Car: Tesla 3</option>
                         </select>
+
                         <lable for="date" class="p-1 form-lable">Date:</lable>
-                        <input id="date" type="date" class="text-light mb-3 form-control bg-transparent">
-                        <div class="form-check-inline">
+                        <input name"discount" id="date" type="date" class="text-light mb-3 form-control bg-transparent">
+
+                        <div class="form-check-inline mb-3">
                             <lable class="form-lable d-block" for="">Special Rate: </lable>
                             <div class="form-check d-inline-block">
                                 <lable class="form-lable" for="rate">Senior</lable>
-                                <input id="rate-rdio-1" value="Senior" name="rate" type="radio"
-                                    class="form-check-inline">
+                                <input onchange="isChecked()" id="rate-rdio-1" value="0.25" name="rate" type="radio"
+                                    class="form-check-inline discounts">
                             </div>
                             <div class="form-check d-inline-block">
                                 <lable class="form-lable" for="rate">Government</lable>
-                                <input id="rate-rdio-2" value="Government" name="rate" type="radio"
-                                    class="form-check-inline">
+                                <input onchange="isChecked()" id="rate-rdio-2" value="0.15" name="rate" type="radio"
+                                    class="form-check-inline discounts">
                             </div>
                             <div class="form-check d-inline-block">
                                 <lable class="form-lable" for="rate">Corporate</lable>
-                                <input id="rate-rdio-3" value="Corporate" name="rate" type="radio"
-                                    class="form-check-inline">
+                                <input onchange="isChecked()" id="rate-rdio-3" value="0.1" name="rate" type="radio"
+                                    class="form-check-inline discounts">
                             </div>
                             <div class="form-check d-inline-block">
                                 <lable class="form-lable" for="rate">AAA</lable>
-                                <input id="rate-rdio-3" value="AAA" name="rate" type="radio" class="form-check-inline">
+                                <input onchange="isChecked()" id="rate-rdio-3" value="0.2" name="rate" type="radio"
+                                    class="form-check-inline discounts">
                             </div>
                         </div>
+                        <hr>
                         <div class="form-check">
-                            <input type="checkbox" id="chk-box" class="form-check-input">
+                            <input onchange="hasInsurance()" type="checkbox" id="chk-box" class="form-check-input">
                             <lable class="form-check-lable" for="chk-box">Do you want insurance?</lable>
                         </div>
-
-                    </form>
-                </div>
-                <div class="col-4">
-                    ufvfu
+                        <hr>
+                        <div class="form-check">
+                            <p class="d-inline "> Additional drivers: </p>
+                            <input onchange="hasDrivers()" onkeypress="hasDrivers()" type="number" id="driversInput"
+                                class="d-inline-block form-control" style="width:70px;">
+                        </div>
+                        <hr>
+                        <div class="form-check">
+                            <p class="d-inline "># of days: </p>
+                            <input onchange="nbOfDaysChanger()" type="number" id="days"
+                                class="d-inline-block form-control" style="width:70px;">
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <p class="answers pb-5">Daily Rate: <span id="daily-rate">0</span></p>
+                        <p class="answers">Discount: <span id="discount">0</span></p>
+                        <p class="answers">Insurance: <span id="insurance">0</span></p>
+                        <p class="answers">Drivers: <span id="numberOfDrivers">0</span></p>
+                        <p class="answers">Cost/Day: <span id="cost-per-day">0</span></p>
+                        <p class="answers">Total cost: <span id="total-cost">0</span></p>
+                    </div>
+                    <div class="finish-btns pt-3">
+                        <button value="Rest" type="reset"
+                            class="finish-btn btn d-inline text-bg-light text-white w-auto">Rest</button>
+                        <button value="Submit" type="submit"
+                            class="finish-btn btn d-inline text-bg-light text-white w-auto">Continue</button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 
+
+
+    <script>
+        var totalCost;
+        var costPerDay = 0;
+        var rateValue = 0;
+        var discountValue = 0;
+        var insuranceValue = 0;
+        var driversValue = 0;
+        var numberOfDays = 0;
+        function rateChanger() {
+            var rate = document.getElementById("selectCar");
+            document.getElementById("daily-rate").innerHTML = rate.value;
+            rateValue = rate.value;
+            calcCostPerDay();
+        }
+
+        function isChecked() {
+            var ele = document.getElementsByName('rate');
+            for (i = 0; i < ele.length; i++) {
+                if (ele[i].checked) {
+                    discountValue = ele[i].value;
+                    document.getElementById("discount").innerHTML
+                        = ele[i].value * 100 + "%";
+                        calcCostPerDay();
+                }
+            }
+        }
+
+        function hasInsurance() {
+            if (document.getElementById("chk-box").checked) {
+                document.getElementById("insurance").innerHTML = "" + 10;
+                insuranceValue = 10;
+            } else {
+                document.getElementById("insurance").innerHTML = "" + 0;
+                insuranceValue = 0;
+            }
+            calcCostPerDay();
+        }
+
+        function hasDrivers() {
+            var el1 = document.getElementById("numberOfDrivers");
+            var el2 = document.getElementById("driversInput");
+            el1.innerHTML = el2.value * 15;
+            driversValue = el2.value * 15;
+            calcCostPerDay();
+        }
+
+        function nbOfDaysChanger() {
+            var el2 = document.getElementById("days");
+            numberOfDays = el2.value;
+            calcCostPerDay();
+        }
+
+        function calcCostPerDay() {
+            costPerDay = parseFloat(rateValue)+-parseFloat(rateValue)*parseFloat(discountValue)+parseFloat(insuranceValue)+parseFloat(driversValue);
+            document.getElementById("cost-per-day").innerHTML = costPerDay;
+            calcTotal();
+        }
+
+        function calcTotal() {
+            totalCost = parseFloat(costPerDay) * parseFloat(numberOfDays);
+            document.getElementById("total-cost").innerHTML = totalCost;
+        }
+    </script>
 </body>
 
 
